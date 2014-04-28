@@ -4,6 +4,7 @@ var gulp = require('gulp'),
 		uglify = require('gulp-uglify'),
 		sass = require('gulp-sass'),
 
+		connect = require('gulp-connect'),
 		gulpif = require('gulp-if');
 
 var env = process.env.NODE_ENV || 'development';
@@ -44,4 +45,16 @@ gulp.task('watch', function() {
 	gulp.watch('src/sass/**/*.scss', ['sass']);
 });
 
-gulp.task('default', ['js', 'jade', 'sass', 'watch']);
+// gulp.task('connect', connect.server({
+// 	root: [outputDir],
+// 	open: { browser: 'Google Chrome' }
+// }));
+
+gulp.task('connect', function(){
+	connect.server({
+		root: [outputDir],
+		livereload: true
+	});
+});
+
+gulp.task('default', ['js', 'jade', 'sass', 'watch', 'connect']);
