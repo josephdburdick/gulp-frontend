@@ -1,18 +1,18 @@
 var gulp = require('gulp'),
-	jade = require('gulp-jade'),
-	browserify = require('gulp-browserify'),
-	uglify = require('gulp-uglify'),
-	sass = require('gulp-sass'),
+		jade = require('gulp-jade'),
+		browserify = require('gulp-browserify'),
+		uglify = require('gulp-uglify'),
+		sass = require('gulp-sass'),
 
-	gulpif = require('gulp-if');
+		gulpif = require('gulp-if');
 
 var env = process.env.NODE_ENV || 'development';
 var outputDir = 'builds/development';
 
 gulp.task('jade', function (){
 	return gulp.src('src/templates/**/*.jade')
-	.pipe(jade())
-	.pipe(gulp.dest(outputDir));
+		.pipe(jade())
+		.pipe(gulp.dest(outputDir));
 });
 
 gulp.task('js', function(){
@@ -37,3 +37,11 @@ gulp.task('sass',function(){
 		.pipe(sass(config))
 		.pipe(gulp.dest(outputDir + '/css'));
 });
+
+gulp.task('watch', function() {
+	gulp.watch('src/templates/**/*.jade', ['jade']);
+	gulp.watch('src/js/**/*.js', ['js']);
+	gulp.watch('src/sass/**/*.scss', ['sass']);
+});
+
+gulp.task('default', ['js', 'jade', 'sass', 'watch']);

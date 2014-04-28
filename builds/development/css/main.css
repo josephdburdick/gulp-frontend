@@ -1,1 +1,5 @@
-body{color:#ff0000;}
+body {
+  color: orange;
+  background: #ccc; }
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiIiwic291cmNlcyI6WyJzcmMvc2Fzcy9tYWluLnNjc3MiLCJzcmMvc2Fzcy92YXJpYWJsZXMuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFFQTtFQUNDLE9BQU87RUFDUCxZQUFZIiwic291cmNlc0NvbnRlbnQiOlsiQGltcG9ydCBcInZhcmlhYmxlc1wiO1xuXG5ib2R5IHtcblx0Y29sb3I6IG9yYW5nZTtcblx0YmFja2dyb3VuZDogI2NjYztcbn1cbiIsIiRyZWQ6ICNmZjAwMDA7Il19*/
