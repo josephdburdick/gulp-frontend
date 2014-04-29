@@ -1,17 +1,43 @@
+/*
+
+ Plugins
+
+*/
 var gulp = require('gulp'),
-		jade = require('gulp-jade'),
-		browserify = require('gulp-browserify'),
-		uglify = require('gulp-uglify'),
-		sass = require('gulp-sass'),
+	jade = require('gulp-jade'),
+	browserify = require('gulp-browserify'),
+	uglify = require('gulp-uglify'),
+	sass = require('gulp-sass'),
+	watch = require('gulp-watch'),
 
-		connect = require('gulp-connect'),
-		gulpif = require('gulp-if');
+	plumber = require('gulp-plumber'),
+	gutil = require('gulp-util'),		
+	connect = require('gulp-connect'),
+	gulpif = require('gulp-if');
 
-var env = process.env.NODE_ENV || 'development';
+
+/* 
+ 
+ Defaults
+
+*/
+var env = process.env.NODE_ENV || 'development';  //ex. $ NODE_ENV=production gulp
 var outputDir = 'builds/development';
 
+
+/*
+
+ Tasks
+
+*/
 gulp.task('jade', function (){
 	return gulp.src('src/templates/**/*.jade')
+		.pipe(plumber(function(error) {
+      gutil.beep();
+      gutil.log(gutil.colors.red(error.message));
+      this.emit('end');
+    }))
+		.pipe(watch())
 		.pipe(jade())
 		.pipe(gulp.dest(outputDir))
 		.pipe(connect.reload());
@@ -19,8 +45,14 @@ gulp.task('jade', function (){
 
 gulp.task('js', function(){
 	return gulp.src('src/js/main.js')
+		.pipe(plumber(function(error) {
+      gutil.beep();
+      gutil.log(gutil.colors.red(error.message));
+      this.emit('end');
+    }))
+		.pipe(watch())
 		.pipe(browserify({ debug: env === 'development' }))
-		.pipe(gulpif(env === 'production', uglify() ))
+		.pipe(gulpif(env === 'production', uglify({outSourceMap: true})))
 		.pipe(gulp.dest(outputDir + '/js'))
 		.pipe(connect.reload());
 });
@@ -37,6 +69,12 @@ gulp.task('sass',function(){
 	}
 
 	return gulp.src('src/sass/main.scss')
+		.pipe(plumber(function(error) {
+      gutil.beep();
+      gutil.log(gutil.colors.red(error.message));
+      this.emit('end');
+    }))
+		.pipe(watch())
 		.pipe(sass(config))
 		.pipe(gulp.dest(outputDir + '/css'))
 		.pipe(connect.reload());
@@ -47,11 +85,6 @@ gulp.task('watch', function() {
 	gulp.watch('src/js/**/*.js', ['js']);
 	gulp.watch('src/sass/**/*.scss', ['sass']);
 });
-
-// gulp.task('connect', connect.server({
-// 	root: [outputDir],
-// 	open: { browser: 'Google Chrome' }
-// }));
 
 gulp.task('connect', function(){
 	connect.server({
