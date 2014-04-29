@@ -13,14 +13,16 @@ var outputDir = 'builds/development';
 gulp.task('jade', function (){
 	return gulp.src('src/templates/**/*.jade')
 		.pipe(jade())
-		.pipe(gulp.dest(outputDir));
+		.pipe(gulp.dest(outputDir))
+		.pipe(connect.reload());
 });
 
 gulp.task('js', function(){
 	return gulp.src('src/js/main.js')
 		.pipe(browserify({ debug: env === 'development' }))
 		.pipe(gulpif(env === 'production', uglify() ))
-		.pipe(gulp.dest(outputDir + '/js'));
+		.pipe(gulp.dest(outputDir + '/js'))
+		.pipe(connect.reload());
 });
 
 gulp.task('sass',function(){
@@ -36,7 +38,8 @@ gulp.task('sass',function(){
 
 	return gulp.src('src/sass/main.scss')
 		.pipe(sass(config))
-		.pipe(gulp.dest(outputDir + '/css'));
+		.pipe(gulp.dest(outputDir + '/css'))
+		.pipe(connect.reload());
 });
 
 gulp.task('watch', function() {
